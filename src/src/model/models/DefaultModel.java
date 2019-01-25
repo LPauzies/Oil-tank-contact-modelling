@@ -49,6 +49,7 @@ public class DefaultModel extends Model implements IModel {
 		this.dip = 25;
 		this.ratio = 0.5;
 		this.Buffer5Hz = 0.08;
+		this.frequence = 150;
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JColorChooser;
 import javax.swing.JPanel;
-import javax.swing.colorchooser.AbstractColorChooserPanel;
 import javax.swing.event.MouseInputAdapter;
 
 public class ColorPickerButtonListener extends MouseInputAdapter {

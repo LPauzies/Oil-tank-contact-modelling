@@ -16,11 +16,13 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.JPanel;
 
 import src.calculations.FastFourierTransform;
+import src.debugger.DebugLog;
 import src.graph.tracesismique.Courbe;
 import src.graph.tracesismique.TraceSismique;
 import src.model.Model;
@@ -39,8 +41,6 @@ public class GraphContact extends JPanel {
     private boolean firstTime = true;
     private boolean dessinCourbes = true;
     private boolean echelleModif = true;   
-    private boolean check_and_update;
-    private Color gris;
     private boolean refractionEffect = true;
     
     private int tailleFleche = 6;
@@ -337,21 +337,30 @@ public class GraphContact extends JPanel {
     
     public void setRho(int i,double val) {
 	    rho[i] = val;
+	    typeCouches[i].removeOwnChangeListenerRho();
 	    typeCouches[i].setRho(val);
+	    typeCouches[i].addOwnChangeListenerRho();
     }
     
     public void setVp(int i , double val) {
 	    vp[i] = val;
+	    typeCouches[i].removeOwnChangeListenerVp();
 	    typeCouches[i].setVp(val);
+	    typeCouches[i].addOwnChangeListenerVp();
     }
     
     public void setVs(int i , double val) {
 	    vs[i] = val;
+	    typeCouches[i].removeOwnChangeListenerVs();
 	    typeCouches[i].setVs(val);
+	    typeCouches[i].addOwnChangeListenerVs();
     }
     
     public void setPr(int i , double val) {
     	pr[i] = val;
+    	typeCouches[i].removeOwnChangeListenerPr();
+    	typeCouches[i].setPr(val);
+    	typeCouches[i].addOwnChangeListenerPr();
     } 
     
     public void setGain(double val) {
@@ -420,7 +429,6 @@ public class GraphContact extends JPanel {
     	
     	vectCourbes.clear();
     	courbes=new TraceSismique[ncrb];
-    	gris = getBackground();
     	for (int i = 0 ; i < ncrb ; i++) {		
     		courbes[i]= new TraceSismique();
     		courbes[i].setOrigine((double)i);
@@ -436,17 +444,7 @@ public class GraphContact extends JPanel {
     public void setTypeCouches(){
     	TypeCouches.clear();
     	TypeCouches = getModel().generateTypeCouche();
-    	this.typeCouches = new TypeCouche[getModel().labels.length];
-    	for (int i = 0; i < TypeCouches.size(); i++) {
-			typeCouches[i] = TypeCouches.elementAt(i);
-		}
-    	/*
-    	for (int i = 0 ; i < couches.length ; i++) {
-    		typeCouches[i] = new TypeCouche(couches[i],Color.BLACK);
-    		typeCouches[i].setParam(rho[i], vp[i], vs[i], pr[i]);
-    		TypeCouches.add(typeCouches[i]);
-    	}*/
-    
+    	typeCouches = getModel().generateTypeCoucheArray();
     }
     
     public void calculReflectivities(boolean _refractionEffect) {
@@ -1315,7 +1313,7 @@ public class GraphContact extends JPanel {
 
     public void dessin() {
 	    dessinCourbes = true;
-	    repaint();
+	    //repaint();
     }
     
     public double getAmpMaxAbs() {

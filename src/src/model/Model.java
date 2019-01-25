@@ -17,6 +17,7 @@ public class Model {
 	public double thick;
     public double dip;
     public double ratio;
+    public double frequence;
     public double Buffer5Hz;
     
 	public double TM;
@@ -40,6 +41,18 @@ public class Model {
     	if (nbTypeCouches == rho.length && nbTypeCouches == vp.length && nbTypeCouches == vs.length && nbTypeCouches == pr.length) {
     		for (int i = 0; i < nbTypeCouches; i++) {
     			typeCouches.add(new TypeCouche(labels[i], colors[i], rho[i], vp[i], vs[i], pr[i]));
+			}
+		}
+    	return typeCouches;
+    }
+    
+	public TypeCouche[] generateTypeCoucheArray() {
+    	
+		int nbTypeCouches = labels.length;
+    	TypeCouche[] typeCouches = new TypeCouche[nbTypeCouches];
+    	if (nbTypeCouches == rho.length && nbTypeCouches == vp.length && nbTypeCouches == vs.length && nbTypeCouches == pr.length) {
+    		for (int i = 0; i < nbTypeCouches; i++) {
+    			typeCouches[i] = new TypeCouche(labels[i], colors[i], rho[i], vp[i], vs[i], pr[i]);
 			}
 		}
     	return typeCouches;

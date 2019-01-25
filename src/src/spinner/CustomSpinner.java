@@ -13,6 +13,7 @@ public class CustomSpinner extends JSpinner {
     private double valMin;
     private double valMax;
     private double step;
+    private double previousValue;
     
     /* Constructor */
     public CustomSpinner(double _valDef, double _valMin , double _valMax,double _step,int precision) {
@@ -21,6 +22,7 @@ public class CustomSpinner extends JSpinner {
         valMin = _valMin;
         valMax = _valMax;
         step = _step;
+        previousValue = _valDef;
         model = new MySpinnerNumberModel(valDef,valMin,valMax,step);
         this.setModel(model);
         String pattern = "####";
@@ -36,12 +38,17 @@ public class CustomSpinner extends JSpinner {
     }
     
     public double getValeur() {
-        Double val = (Double) super.getValue();
-        return val.doubleValue();
+        double val = (double) getValue();
+        return val;
     }
     
     public void setValeur(double val) {
-        super.setValue(new Double(val));
+        setValue(new Double(val));
+        previousValue = val;
+    }
+    
+    public double getPreviousSpinnerValue() {
+    	return this.previousValue;
     }
     
     public void reset() {

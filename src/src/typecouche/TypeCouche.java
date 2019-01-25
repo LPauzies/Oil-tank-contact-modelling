@@ -4,22 +4,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import src.GraphContact;
 import src.colorpicker.ColorPickerButton;
+import src.debugger.DebugLog;
 import src.spinner.CustomSpinner;
 
 public class TypeCouche extends JPanel {
@@ -42,10 +42,16 @@ public class TypeCouche extends JPanel {
 	private double Vs;
 	private double Pr;
     private String Nom;
-    private Color Couleur;
     private double Transp;
-
+    
+	private ChangeListener clVp;
+	private ChangeListener clVs;
+	private ChangeListener clPoisson;
+	private ChangeListener clRho;
+	
+	
     //Constructor by default
+	/*
     public TypeCouche(String name, Color initColor) {
     	
     	super();
@@ -53,37 +59,22 @@ public class TypeCouche extends JPanel {
 	    String[] transparence = {"0 %","10 %","20 %","30 %","50 %","80 %","100 %"};
 	    this.TransparenceFluid = new JComboBox<String>(transparence);
 	    this.TransparenceFluid.setSelectedIndex(3); //Default transparency
+	    this.TransparenceFluid.setSize(25,26);
 	    this.TboutonCouleur = new ColorPickerButton(initColor);
+	    this.TboutonCouleur.setSize(20,26);
 	    
 	    TnomCouche.setHorizontalAlignment(JTextField.LEFT);
 	    TnomCouche.setFont(style);
 	    
-	    /* Initialize CustomSpinners */
+	    // Initialize CustomSpinners
 	    TRho = new CustomSpinner(2d,0.1d,3d,0.05d,3);
+	    TRho.setSize(25,26);
 	    TVp = new CustomSpinner(3000d,100d,6000d,100d,0);
+	    TVp.setSize(25,26);
 	    TVs = new CustomSpinner(1500d,100d,6000d,100d,0);
+	    TVs.setSize(25,26);
 	    TPr = new CustomSpinner(0.33d,0.0d,0.5d,0.01d,3);
-	    
-	    // MousePressed Listener
-	    this.addMouseListener(new MouseAdapter () {
-	        public void mousePressed(MouseEvent e) {
-	            fireFocus();
-	        }
-	    });
-	    
-	    // FocusAdapter Listener
-	    FocusAdapter fa = new FocusAdapter() {
-	        public void focusGained(FocusEvent e) {
-	            fireFocus();
-	        }
-	    };
-	    
-	    TnomCouche.addFocusListener(fa);
-	    TRho.addFocusListener(fa);
-	    TVp.addFocusListener(fa);
-	    TVs.addFocusListener(fa);
-	    TPr.addFocusListener(fa);
-	    TransparenceFluid.addFocusListener(fa);
+	    TPr.setSize(25,26);
 	    
 	    // ChangeListener for Vp
 	    final ChangeListener clVp = new ChangeListener () {
@@ -174,7 +165,7 @@ public class TypeCouche extends JPanel {
 	    add(TPr);
 	    add(TboutonCouleur);
 	    add(TransparenceFluid);
-    }
+    }*/
     
     //Constructor specifying the default values
     public TypeCouche(String name, Color initColor, double rhoDefault, double vpDefault, double vsDefault, double prDefault) {
@@ -184,120 +175,165 @@ public class TypeCouche extends JPanel {
 	    String[] transparence = {"0 %","10 %","20 %","30 %","50 %","80 %","100 %"};
 	    this.TransparenceFluid = new JComboBox<String>(transparence);
 	    this.TransparenceFluid.setSelectedIndex(3); //Default transparency
+	    this.TransparenceFluid.setSize(25,26);
 	    this.TboutonCouleur = new ColorPickerButton(initColor);
+	    this.TboutonCouleur.setSize(20,26);
 	    
 	    TnomCouche.setHorizontalAlignment(JTextField.LEFT);
 	    TnomCouche.setFont(style);
 	    
 	    /* Initialize CustomSpinners */
 	    TRho = new CustomSpinner(rhoDefault,0.1d,3d,0.05d,3);
-	    TVp = new CustomSpinner(vpDefault,100d,6000d,100d,0);
-	    TVs = new CustomSpinner(vsDefault,100d,6000d,100d,0);
-	    TPr = new CustomSpinner(prDefault,0.0d,0.5d,0.01d,3);
+	    TRho.setSize(25,26);
+	    TVp = new CustomSpinner(vpDefault,1000d,6000d,100d,0);
+	    TVp.setSize(25,26);
+	    TVs = new CustomSpinner(vsDefault,500d,4200d,100d,0);
+	    TVs.setSize(25,26);
+	    TPr = new CustomSpinner(prDefault,0.0d,0.49d,0.01d,3);
+	    TPr.setSize(25,26);
 	    Rho = rhoDefault;
 	    Vp = vpDefault;
 	    Vs = vsDefault;
 	    Pr = prDefault;
 	    
-	    // MousePressed Listener
-	    this.addMouseListener(new MouseAdapter () {
-	        public void mousePressed(MouseEvent e) {
-	            fireFocus();
-	        }
-	    });
-	    
-	    // FocusAdapter Listener
-	    FocusAdapter fa = new FocusAdapter() {
-	        public void focusGained(FocusEvent e) {
-	            fireFocus();
-	        }
-	    };
-	    
-	    TnomCouche.addFocusListener(fa);
-	    TRho.addFocusListener(fa);
-	    TVp.addFocusListener(fa);
-	    TVs.addFocusListener(fa);
-	    TPr.addFocusListener(fa);
-	    TransparenceFluid.addFocusListener(fa);
-	    
 	    // ChangeListener for Vp
-	    final ChangeListener clVp = new ChangeListener () {
+	    this.clVp = new ChangeListener () {
 	        private final double sqrt2 = Math.sqrt(2d);
 	        public void stateChanged(ChangeEvent e) {
 	            double vp = TVp.getValeur();
+	            double previous_vp = TVp.getPreviousSpinnerValue();
 	            double vs = TVs.getValeur();
 	            Vp = vp; Vs = vs;
-	            if (vp < vs*sqrt2) {
-	                if (vp/sqrt2 >= TVs.getValMin()) {
-	                    TVp.setValeur(vs*sqrt2);
-	                	Vp = vs*sqrt2;
-	                } else {
-	                    TVs.setValeur(TVs.getValMin());
-	                    Vs = TVs.getValMin();
-	                    TVp.setValeur(TVs.getValMin()*sqrt2);
-	                    Vp = TVs.getValMin()*sqrt2;
-	                }
-	            }
-	            double pr = updatePr();
+	            if (previous_vp < vp) { //Vp increased
+	            	DebugLog.log("Vp increased");
+	            	if (vp > TVp.getValMax()) vp = TVp.getValMax();
+	            	if (!checkCoherenceVpVs(vs, vp)) {
+            			DebugLog.log("Vs Vp not coherent, making coherence between these two values");
+            			vs = vp/sqrt2;
+            			TVs.removeChangeListener(clVs);
+						TVs.setValeur(vs);
+						TVs.addChangeListener(clVs);
+						Vs = vs;
+					} else {
+						DebugLog.log("Vs Vp coherent, do nothing");
+					}
+				} else { //Vp decreased
+					DebugLog.log("Vp decreased");
+					if (vp < TVp.getValMin()) vp = TVp.getValMin();
+					if (!checkCoherenceVpVs(vs, vp)) {
+						DebugLog.log("Vs Vp not coherent, making coherence between these two values");
+						vs = vp/sqrt2;
+            			TVs.removeChangeListener(clVs);
+						TVs.setValeur(vs);
+						TVs.addChangeListener(clVs);
+						Vs = vs;
+						TVp.removeChangeListener(clVp);
+						TVp.setValeur(vp);
+						TVp.addChangeListener(clVp);
+						Vp = vp;
+					} else {
+						DebugLog.log("Vs Vp coherent, fixed Vp, calculate new Vs");
+						double resVs = Math.max(vp/sqrt2, TVs.getValMin());
+						TVs.removeChangeListener(clVs);
+						TVs.setValeur(resVs);
+						TVs.addChangeListener(clVs);
+						Vs = resVs;			
+					}
+				}
+	            double pr = calculateNewPr(Vs,Vp);
+	            TPr.removeChangeListener(clPoisson);
 	            TPr.setValeur(pr);
+	            TPr.addChangeListener(clPoisson);
 	            Pr = pr;
-	            firePropertyChange("Elasticchanged",null,null);  
 	        }
 	    };
 	    
-	    TVp.addChangeListener(clVp);
-	
 	    // ChangeListener for Vs
-	    final ChangeListener clVs = new ChangeListener () {
+	    this.clVs = new ChangeListener () {
 	        private final double sqrt2 = Math.sqrt(2d);
 	        public void stateChanged(ChangeEvent e) {
 	            double vp = TVp.getValeur();
 	            double vs = TVs.getValeur();
+	            double previous_vs = TVs.getPreviousSpinnerValue();
 	            Vp = vp; Vs = vs;
-	            if (vp < vs*sqrt2) {
-	                if (vp/sqrt2 >= TVs.getValMin()) {
-	                    TVs.setValeur(vp/sqrt2);
-	                	Vs = vp/sqrt2;
-	                } else {
-	                    TVs.setValeur(TVs.getValMin());
-	                    TVp.setValeur(TVs.getValMin()*sqrt2);
-	                    Vs = TVs.getValMin();
-	                    Vp = Vs*sqrt2;                
-	                }
-	            }
-	            double pr = updatePr();
+	            if (previous_vs < vs) { //Vs increased
+					DebugLog.log("Vs increased");
+					if (vs > TVs.getValMax()) vs = TVs.getValMax();
+					if (!checkCoherenceVpVs(vs, vp)) {
+            			DebugLog.log("Vs Vp not coherent, making coherence between these two values");
+            			vp = vs*sqrt2;
+            			TVp.removeChangeListener(clVp);
+						TVp.setValeur(vp);
+						TVp.addChangeListener(clVp);
+						Vp = vp;
+					} else {
+						DebugLog.log("Vs Vp coherent, do nothing");
+					}
+				} else {
+					DebugLog.log("Vs decreased");;
+	            	if (vs < TVs.getValMin()) vs = TVs.getValMin();
+	            	if (!checkCoherenceVpVs(vs, vp)) {
+            			DebugLog.log("Vs Vp not coherent, making coherence between these two values");
+            			vp = vs*sqrt2;
+            			TVp.removeChangeListener(clVp);
+						TVp.setValeur(vp);
+						TVp.addChangeListener(clVp);
+						Vp = vp;
+					} else {
+						DebugLog.log("Vs Vp coherent, do nothing");
+					}
+				}
+	            double pr = calculateNewPr(Vs,Vp);
+	            TPr.removeChangeListener(clPoisson);
 	            TPr.setValeur(pr);
+	            TPr.addChangeListener(clPoisson);
 	            Pr = pr;
-	            firePropertyChange("Elasticchanged",null,null);
 	        }
 	    };
-	    
-	    TVs.addChangeListener(clVs);
 	
 	    // ChangeListener for Poisson
-	    final ChangeListener clPoisson = new ChangeListener () {
+	    this.clPoisson = new ChangeListener () {
+	    	private final double sqrt2 = Math.sqrt(2d);
 	        public void stateChanged(ChangeEvent e) {
+	        	double pr = TPr.getValeur();
+	        	double previous_pr = TPr.getPreviousSpinnerValue();
 	            double vp = TVp.getValeur();
-	            double ratio = getVsOverVp();
-	            double vs = vp * ratio; 
-	            TVs.setValeur(vs);
-	            Vs = vs;
-	            firePropertyChange("Elasticchanged",null,null);
+	            double vs = TVs.getValeur();
+	        	if (previous_pr < pr) {
+					DebugLog.log("Pr increased");
+					double ratio = getVsOverVp(pr);
+					double resVp = Math.min(TVp.getValMax(), vs/ratio);
+					TVp.removeChangeListener(clVp);
+					TVp.setValeur(resVp);
+					TVp.addChangeListener(clVp);
+					Vp = resVp;
+					double resVs = resVp*ratio;
+					TVs.setValeur(resVs);
+					Vs = resVs;
+				} else {
+					DebugLog.log("Pr decreased");
+					double ratio = getVsOverVp(pr);
+					double resVp = vs/ratio;
+					TVp.removeChangeListener(clVp);
+					TVp.setValeur(resVp);
+					TVp.addChangeListener(clVp);
+					Vp = resVp;
+				}
 	        }
 	    };
 	    
-	    TPr.addChangeListener(clPoisson);
-	    
 	    // ChangeListener for Rho
-	    final ChangeListener clRho = new ChangeListener () {
+	    this.clRho = new ChangeListener () {
 	        public void stateChanged(ChangeEvent e) {
 	            double rho = TRho.getValeur();
 	            Rho = rho;
-	            firePropertyChange("Elasticchanged",null,null);
 	        }
 	    };
 	    
-	    TRho.addChangeListener(clRho);
+	    TVp.addChangeListener(this.clVp);
+	    TVs.addChangeListener(this.clVs);
+	    TPr.addChangeListener(this.clPoisson);
+	    TRho.addChangeListener(this.clRho);
 	    
 	    // Manage GUI
 	    setLayout(new FlowLayout(FlowLayout.LEFT,5,0));//10
@@ -310,21 +346,46 @@ public class TypeCouche extends JPanel {
 	    add(TboutonCouleur);
 	    add(TransparenceFluid);
     }
+    
+    /* METHODS */
+    
+    /**
+     * Check coherence between vs and vp parameters
+     * vs <= vp/srqt(2)
+     * @param vs : current vs
+     * @param vp : current vp
+     * @return true if vs and vp are coherent else false
+     */
+    public boolean checkCoherenceVpVs(double vs, double vp) {
+    	return vs <= vp/Math.sqrt(2d);
+    }
+    
+    /**
+     * Calculate newPr with vs and vp as input, vs and vp need to be coherent
+     * @param vs : current vs
+     * @param vp : current vp
+     * @return associated pr or 0 if not coherent negatively ( < 0) or 1 if not coherent positively ( > 1)
+     */
+    public double calculateNewPr(double vs, double vp) {
+    	double ratio = vs/vp;
+    	ratio = ratio*ratio;
+    	double pr = (0.5d - ratio)/(1d - ratio);
+    	if (pr <= 0) pr = 0;
+    	if (pr >= 1) pr = 1;
+    	return pr;
+    }
+    
+    /**
+     * Calculate the ratio vs/vp using pr as inupt
+     * @param pr : current poisson ratio pr
+     * @return vs/vp
+     */
+    public double getVsOverVp(double pr) {
+    	double ratio = 0.5d*(1-2d*pr)/(1d-pr);
+    	return Math.sqrt(ratio);
+    }
 
-	/* METHODS */
-    public void fireFocus() {
-        firePropertyChange("focusGained",null,this);
-    }
-    
-    protected void firePropertyChange(String prop, Object oldValue ,Object newValue) {
-        super.firePropertyChange(prop,oldValue,newValue);
-    }
-    
-    /* SETTERS */
-    public void setCouleur(Color _couleur) {
-    	Couleur = _couleur;
-    }
-    
+    /* SETTERS */    
     public void setTransp(double val) {
     	Transp = val;
     }
@@ -342,6 +403,11 @@ public class TypeCouche extends JPanel {
     public void setVs(double val) {
     	TVs.setValeur(val);
     	Vs = val;
+    }
+    
+    public void setPr(double val) {
+    	TPr.setValeur(val);
+    	Pr = val;
     }
     
     public void setNom(String val) {
@@ -389,9 +455,9 @@ public class TypeCouche extends JPanel {
     	this.TransparenceFluid.setSelectedIndex(3);
     }
     
-    /* GETTERS */
-    public Color getCouleur() {
-    	return Couleur;
+    /* GETTERS */    
+    public Color getColor() {
+    	return this.TboutonCouleur.getCouleur();
     }
     
     public double getTransp() {
@@ -420,50 +486,31 @@ public class TypeCouche extends JPanel {
     	return TPr.getValeur();
     }
         
-    public double updatePr() {
-    	double ratio = TVp.getValeur()/TVs.getValeur();
-        ratio *= ratio;
-        return (0.5d*ratio-1d)/(ratio-1d);
-    }
-    
-    public double getVsOverVp() {
-        double pr = TPr.getValeur();
-        double ratio = 0.5d*(1-2d*pr)/(1d-pr);
-        return Math.sqrt(ratio);
-    }
-        
     public String getNom() {
         return TnomCouche.getText();
     }
     
     /* AddingChangeListener */
-    private void addChangeListenerNom(CaretListener ccl) {
+    public void addChangeListenerNom(CaretListener ccl) {
         TnomCouche.addCaretListener(ccl);
     }  
-    private void addChangeListenerRho(ChangeListener cl) {
+    public void addChangeListenerRho(ChangeListener cl) {
         TRho.addChangeListener(cl);
     }
-    private void addChangeListenerVp(ChangeListener cl) {
+    public void addChangeListenerVp(ChangeListener cl) {
         TVp.addChangeListener(cl);
     }
-    private void addChangeListenerVs(ChangeListener cl) {
+    public void addChangeListenerVs(ChangeListener cl) {
         TVs.addChangeListener(cl);
     }
-    private void addChangeListenerPr(ChangeListener cl) {
+    public void addChangeListenerPr(ChangeListener cl) {
         TPr.addChangeListener(cl);
     }
-    private void addChangeListenerCouleur(PropertyChangeListener pcl) {
+    public void addChangeListenerCouleur(PropertyChangeListener pcl) {
         TboutonCouleur.addPropertyChangeListener(pcl);
     }
-    
-    //Bind all change listeners for a TypeCouche
-    public void bindChangeListeners(CaretListener clnom, ChangeListener clrho, ChangeListener clvp, ChangeListener clvs, ChangeListener clpr, PropertyChangeListener pclcolor) {
-    	addChangeListenerNom(clnom);
-    	addChangeListenerRho(clrho);
-    	addChangeListenerVp(clvp);
-    	addChangeListenerVs(clvs);
-    	addChangeListenerPr(clpr);
-    	addChangeListenerCouleur(pclcolor);
+    public void addActionListenerTransparence(ActionListener al) {
+    	TransparenceFluid.addActionListener(al);
     }
 
     public double getAttrRho() {
@@ -487,6 +534,9 @@ public class TypeCouche extends JPanel {
     public double getIs() {
         return TRho.getValeur()*TVs.getValeur();
     }
+    public ColorPickerButton getColorPickerButton() {
+    	return this.TboutonCouleur;
+    }
     public Map<String, CustomSpinner> getCustomSpinners() {
 		Map<String, CustomSpinner> mapKeyCustomSpinner = new HashMap<>();
 		mapKeyCustomSpinner.put("Rho", this.TRho);
@@ -495,7 +545,36 @@ public class TypeCouche extends JPanel {
 		mapKeyCustomSpinner.put("Pr", this.TPr);
 		return mapKeyCustomSpinner;
     }
-
+    public double getTransparence() {
+    	StringTokenizer tk = new StringTokenizer((String)this.TransparenceFluid.getSelectedItem());
+		return Double.parseDouble(tk.nextToken())*255/100;
+    }
+    
+    /* Own changeListener handler */
+    public void removeOwnChangeListenerRho() {
+    	this.TRho.removeChangeListener(clRho);
+    }
+    public void addOwnChangeListenerRho() {
+    	this.TRho.addChangeListener(clRho);
+    }
+    public void removeOwnChangeListenerVp() {
+    	this.TVp.removeChangeListener(clVp);
+    }
+    public void addOwnChangeListenerVp() {
+    	this.TVp.addChangeListener(clVp);
+    }
+    public void removeOwnChangeListenerVs() {
+    	this.TVs.removeChangeListener(clVs);
+    }
+    public void addOwnChangeListenerVs() {
+    	this.TVs.addChangeListener(clVs);
+    }
+    public void removeOwnChangeListenerPr() {
+    	this.TPr.removeChangeListener(clPoisson);
+    }
+    public void addOwnChangeListenerPr() {
+    	this.TPr.addChangeListener(clPoisson);
+    }
         
 }
 
