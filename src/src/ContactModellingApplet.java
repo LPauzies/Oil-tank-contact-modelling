@@ -1023,6 +1023,7 @@ public class ContactModellingApplet extends JApplet {
 		 */
 
 		//PANE WORKING CURRENTLY
+		/*
 		panelLayers.add(new JLabel("!! Trucs qui marchent !!"));
 		panelLayers.add(panelTopRock);
 		panelLayers.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -1031,6 +1032,7 @@ public class ContactModellingApplet extends JApplet {
 		panelLayers.add(new JSeparator(SwingConstants.HORIZONTAL));
 		//panelLayers.add(Box.createHorizontalStrut(10));
 		panelLayers.add(panelBaseRock);
+		*/
 
 		panelWave.add(labelFrequence);
 		panelWave.add(frequence);
@@ -2467,6 +2469,7 @@ public class ContactModellingApplet extends JApplet {
 	public static void main(String[] args) {
 
 		ContactModellingApplet applet = new ContactModellingApplet();
+		Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
 		final JFrame frame = new JFrame("Contact Modelling Applet");
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -2478,6 +2481,8 @@ public class ContactModellingApplet extends JApplet {
 		});
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(applet);
+		frame.setSize(dimension);
+		frame.setUndecorated(true);
 		frame.setResizable(true);
 		applet.init();
 		applet.start();
