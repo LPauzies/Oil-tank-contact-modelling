@@ -2482,7 +2482,6 @@ public class ContactModellingApplet extends JApplet {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(applet);
 		frame.setSize(dimension);
-		frame.setUndecorated(true);
 		frame.setResizable(true);
 		applet.init();
 		applet.start();

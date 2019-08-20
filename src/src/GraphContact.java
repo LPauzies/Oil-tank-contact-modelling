@@ -1096,9 +1096,9 @@ public class GraphContact extends JPanel {
 		int nseg = top.size();
 		int iseg, n;
 		
-		for (iseg = 0 ; iseg <nseg ; iseg++) {
-		    top.elementAt(iseg).reset() ;
-			base.elementAt(iseg).reset() ;
+		for (iseg = 0 ; iseg < nseg ; iseg++) {
+		    top.elementAt(iseg).reset();
+			base.elementAt(iseg).reset();
 		}
 		
 		// amplitudes top
