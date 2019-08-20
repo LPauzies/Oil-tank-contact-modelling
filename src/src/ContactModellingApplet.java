@@ -57,6 +57,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import src.colorpicker.ColorPickerButton;
 import src.debugger.DebugLog;
+import src.graph.GraphContact;
 import src.graph.Graphique;
 import src.graph.GraphiqueWavelet;
 import src.graph.tracesismique.TraceSismique;

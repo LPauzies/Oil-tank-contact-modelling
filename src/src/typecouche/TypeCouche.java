@@ -17,9 +17,9 @@ import javax.swing.event.CaretListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import src.GraphContact;
 import src.colorpicker.ColorPickerButton;
 import src.debugger.DebugLog;
+import src.graph.GraphContact;
 import src.spinner.CustomSpinner;
 
 public class TypeCouche extends JPanel {
@@ -48,124 +48,6 @@ public class TypeCouche extends JPanel {
 	private ChangeListener clVs;
 	private ChangeListener clPoisson;
 	private ChangeListener clRho;
-	
-	
-    //Constructor by default
-	/*
-    public TypeCouche(String name, Color initColor) {
-    	
-    	super();
-	    TnomCouche = new JTextField(name,6);
-	    String[] transparence = {"0 %","10 %","20 %","30 %","50 %","80 %","100 %"};
-	    this.TransparenceFluid = new JComboBox<String>(transparence);
-	    this.TransparenceFluid.setSelectedIndex(3); //Default transparency
-	    this.TransparenceFluid.setSize(25,26);
-	    this.TboutonCouleur = new ColorPickerButton(initColor);
-	    this.TboutonCouleur.setSize(20,26);
-	    
-	    TnomCouche.setHorizontalAlignment(JTextField.LEFT);
-	    TnomCouche.setFont(style);
-	    
-	    // Initialize CustomSpinners
-	    TRho = new CustomSpinner(2d,0.1d,3d,0.05d,3);
-	    TRho.setSize(25,26);
-	    TVp = new CustomSpinner(3000d,100d,6000d,100d,0);
-	    TVp.setSize(25,26);
-	    TVs = new CustomSpinner(1500d,100d,6000d,100d,0);
-	    TVs.setSize(25,26);
-	    TPr = new CustomSpinner(0.33d,0.0d,0.5d,0.01d,3);
-	    TPr.setSize(25,26);
-	    
-	    // ChangeListener for Vp
-	    final ChangeListener clVp = new ChangeListener () {
-	        private final double sqrt2 = Math.sqrt(2d);
-	        public void stateChanged(ChangeEvent e) {
-	            double vp = TVp.getValeur();
-	            double vs = TVs.getValeur();
-	            Vp = vp; Vs = vs;
-	            if (vp < vs*sqrt2) {
-	                if (vp/sqrt2 >= TVs.getValMin()) {
-	                    TVp.setValeur(vs*sqrt2);
-	                	Vp = vs*sqrt2;
-	                } else {
-	                    TVs.setValeur(TVs.getValMin());
-	                    Vs = TVs.getValMin();
-	                    TVp.setValeur(TVs.getValMin()*sqrt2);
-	                    Vp = TVs.getValMin()*sqrt2;
-	                }
-	            }
-	            double pr = updatePr();
-	            TPr.setValeur(pr);
-	            Pr = pr;
-	            firePropertyChange("Elasticchanged",null,null);  
-	        }
-	    };
-	    
-	    TVp.addChangeListener(clVp);
-	
-	    // ChangeListener for Vs
-	    final ChangeListener clVs = new ChangeListener () {
-	        private final double sqrt2 = Math.sqrt(2d);
-	        public void stateChanged(ChangeEvent e) {
-	            double vp = TVp.getValeur();
-	            double vs = TVs.getValeur();
-	            Vp = vp; Vs = vs;
-	            if (vp < vs*sqrt2) {
-	                if (vp/sqrt2 >= TVs.getValMin()) {
-	                    TVs.setValeur(vp/sqrt2);
-	                	Vs = vp/sqrt2;
-	                } else {
-	                    TVs.setValeur(TVs.getValMin());
-	                    TVp.setValeur(TVs.getValMin()*sqrt2);
-	                    Vs = TVs.getValMin();
-	                    Vp = Vs*sqrt2;                
-	                }
-	            }
-	            double pr = updatePr();
-	            TPr.setValeur(pr);
-	            Pr = pr;
-	            firePropertyChange("Elasticchanged",null,null);
-	        }
-	    };
-	    
-	    TVs.addChangeListener(clVs);
-	
-	    // ChangeListener for Poisson
-	    final ChangeListener clPoisson = new ChangeListener () {
-	        public void stateChanged(ChangeEvent e) {
-	            double vp = TVp.getValeur();
-	            double ratio = getVsOverVp();
-	            double vs = vp * ratio; 
-	            TVs.setValeur(vs);
-	            Vs = vs;
-	            firePropertyChange("Elasticchanged",null,null);
-	        }
-	    };
-	    
-	    TPr.addChangeListener(clPoisson);
-	    
-	    // ChangeListener for Rho
-	    final ChangeListener clRho = new ChangeListener () {
-	        public void stateChanged(ChangeEvent e) {
-	            double rho = TRho.getValeur();
-	            Rho = rho;
-	            firePropertyChange("Elasticchanged",null,null);
-	        }
-	    };
-	    
-	    TRho.addChangeListener(clRho);
-	    
-	    // Manage GUI
-	    setLayout(new FlowLayout(FlowLayout.LEFT,5,0));//10
-	    setTaille(50,20,50,50,50,50,24);//65
-	    add(TnomCouche);
-	    add(TRho);
-	    add(TVp);
-	    add(TVs);
-	    add(TPr);
-	    add(TboutonCouleur);
-	    add(TransparenceFluid);
-    }*/
     
     //Constructor specifying the default values
     public TypeCouche(String name, Color initColor, double rhoDefault, double vpDefault, double vsDefault, double prDefault) {

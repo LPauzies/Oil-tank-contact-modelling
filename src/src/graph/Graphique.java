@@ -17,8 +17,6 @@ import java.util.Vector;
 
 import javax.swing.JPanel;
 
-import src.GraphContact;
-
 public class Graphique extends JPanel {
 
     /* auto UID serial Version */
